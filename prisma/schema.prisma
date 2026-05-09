@@ -120,3 +120,12 @@ enum EventType {
   MILESTONE
   OTHER
 }
+
+model GoogleToken {
+  id           String   @id @default(cuid())
+  accessToken  String
+  refreshToken String
+  expiryDate   BigInt
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
