@@ -1,11 +1,21 @@
 import { google } from 'googleapis'
 import { prisma } from './prisma'
 
+export function assertGoogleEnv() {
+  const missing = ['GOOGLE_CLIENT_ID', 'GOOGLE_CLIENT_SECRET', 'GOOGLE_REDIRECT_URI'].filter(
+    (k) => !process.env[k],
+  )
+  if (missing.length) {
+    throw new Error(`Missing Google OAuth env vars: ${missing.join(', ')}`)
+  }
+}
+
 export function createOAuthClient() {
+  assertGoogleEnv()
   return new google.auth.OAuth2(
-    process.env.GOOGLE_CLIENT_ID,
-    process.env.GOOGLE_CLIENT_SECRET,
-    process.env.GOOGLE_REDIRECT_URI,
+    process.env.GOOGLE_CLIENT_ID!,
+    process.env.GOOGLE_CLIENT_SECRET!,
+    process.env.GOOGLE_REDIRECT_URI!,
   )
 }
 
